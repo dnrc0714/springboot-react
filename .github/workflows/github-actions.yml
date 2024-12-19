@@ -73,9 +73,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: ${{ secrets.PORT }}
+          envs: GITHUB_SHA
           script: |
-              echo "REPO_NAME=${{ secrets.DOCKERHUB_REPOSITORY_NAME }}"
-              echo "REPO_NAME=${{ secrets.DOCKERHUB_IMAGE_NAME }}"
+              echo "REPO_NAME=${{ secrets.REPO_NAME }}"
+              echo "REPO_NAME=${{ secrets.IMAGE_NAME }}"
               echo "REPO_TAG=${GITHUB_SHA::7}"
 #            sudo docker login -u ${{ secrets.DOCKERHUB_ID }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 #            sudo docker pull ${{ secrets.DOCKERHUB_REPOSITORY_NAME }}:${GITHUB_SHA::7}
