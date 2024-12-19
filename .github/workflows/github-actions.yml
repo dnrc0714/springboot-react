@@ -74,7 +74,10 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: ${{ secrets.PORT }}
           script: |
-            sudo docker login -u ${{ secrets.DOCKERHUB_ID }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-            sudo docker pull ${{ secrets.DOCKERHUB_REPOSITORY_NAME }}:${GITHUB_SHA::7}
-            sudo docker tag  ${{ secrets.DOCKERHUB_REPOSITORY_NAME }}:${GITHUB_SHA::7} ${{ secrets.DOCKERHUB_IMAGE_NAME }}
-            sudo docker-compose up
+              echo "REPO_NAME=${{ secrets.DOCKERHUB_REPOSITORY_NAME }}"
+              echo "REPO_NAME=${{ secrets.DOCKERHUB_IMAGE_NAME }}"
+              echo "REPO_TAG=${GITHUB_SHA::7}"
+#            sudo docker login -u ${{ secrets.DOCKERHUB_ID }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+#            sudo docker pull ${{ secrets.DOCKERHUB_REPOSITORY_NAME }}:${GITHUB_SHA::7}
+#            sudo docker tag  ${{ secrets.DOCKERHUB_REPOSITORY_NAME }}:${GITHUB_SHA::7} ${{ secrets.DOCKERHUB_IMAGE_NAME }}
+#            sudo docker-compose up
