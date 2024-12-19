@@ -50,8 +50,17 @@ jobs:
       - name: Build React App
         run: npm run build
         working-directory: src/main/frontend
+
       # Gradle build (Test 제외)
       - name: Build with Gradle
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
           arguments: clean build -x test
+
+      # Docker build
+      - name: Docker build
+        run: |
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          docker build -t ${{ secrets.DOCKERHUB_REPOSITORY_NAME }} .
+          docker tag ${{ secrets.DOCKERHUB_REPOSITORY_NAME }} ${{ secrets.DOCKERHUB_REPOSITORY_NAME }}:${GITHUB_SHA::7}
+          docker push ${{ secrets.DOCKERHUB_REPOSITORY_NAME }}:${GITHUB_SHA::7}
