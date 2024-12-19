@@ -75,10 +75,7 @@ jobs:
           port: ${{ secrets.PORT }}
           envs: GITHUB_SHA
           script: |
-              echo "REPO_NAME=${{ secrets.REPO_NAME }}"
-              echo "REPO_NAME=${{ secrets.IMAGE_NAME }}"
-              echo "REPO_TAG=${GITHUB_SHA::7}"
-#            sudo docker login -u ${{ secrets.DOCKERHUB_ID }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-#            sudo docker pull ${{ secrets.DOCKERHUB_REPOSITORY_NAME }}:${GITHUB_SHA::7}
-#            sudo docker tag  ${{ secrets.DOCKERHUB_REPOSITORY_NAME }}:${GITHUB_SHA::7} ${{ secrets.DOCKERHUB_IMAGE_NAME }}
-#            sudo docker-compose up
+            sudo docker login -u ${{ secrets.DOCKERHUB_ID }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+            sudo docker pull ${{ secrets.REPO_NAME }}:${GITHUB_SHA::7}
+            sudo docker tag  ${{ secrets.REPO_NAME }}:${GITHUB_SHA::7} ${{ secrets.IMAGE_NAME }}
+            sudo docker-compose up
