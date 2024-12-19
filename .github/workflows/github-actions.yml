@@ -42,7 +42,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./frontend # React 프로젝트 디렉토리 경로로 수정
+        working-directory: frontend # React 프로젝트 디렉토리 경로로 수정
 
       - name: Build React App
         run: npm run build
