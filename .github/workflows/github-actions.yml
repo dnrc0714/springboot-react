@@ -18,6 +18,9 @@ jobs:
       # 기본 체크아웃
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
+          submodules: true
       # Gradlew 실행 허용
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
@@ -33,9 +36,6 @@ jobs:
           cd ./src/main/resources
           touch ./env.properties
           echo "${{ secrets.ENV }}" > ./env.properties
-        with:
-          token: ${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
-          submodules: true
         shell: bash
 
       - name: Set up Node.js
