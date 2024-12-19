@@ -33,6 +33,9 @@ jobs:
           cd ./src/main/resources
           touch ./env.properties
           echo "${{ secrets.ENV }}" > ./env.properties
+        with:
+          token: ${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
+          submodules: true
         shell: bash
 
       - name: Set up Node.js
