@@ -45,11 +45,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: src/main/frontend # React 프로젝트 디렉토리 경로로 수정
+        working-directory: src/main/health_front # React 프로젝트 디렉토리 경로로 수정
 
       - name: Build React App
         run: npm run build
-        working-directory: src/main/frontend
+        working-directory: src/main/health_front
 
       # Gradle build (Test 제외)
       - name: Build with Gradle
