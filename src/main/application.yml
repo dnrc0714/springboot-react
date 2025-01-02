@@ -8,8 +8,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://34.47.85.142:5432/health
-    username: postgres
-    password: ",?]I(n+Q)AK9*i(O"
+    username: health
+    password: "h('Q=a4TJI`8t*/m"
 
   # jpa properties
   jpa:
