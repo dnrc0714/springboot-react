@@ -9,7 +9,7 @@ spring:
       driver-class-name: org.postgresql.Driver
       url: jdbc:postgresql://34.47.85.142:5432/health
       username: health
-      password: "x(8x1{y1Ax*ByaS%"
+      password: K8o#<iu]OjMG+0ka
   # jpa properties
     jpa:
       hibernate:
