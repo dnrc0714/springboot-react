@@ -18,16 +18,13 @@ public class AuthService {
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public String register(String username, String password, String email) {
-        if (userRepository.findByUsername(username).isPresent()) {
+    public String register(User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new RuntimeException("Username already exists");
         }
-
-        User user = new User();
-        user.setUsername(username);
-        String encryptedPassword = encoder.encode(password); // 비밀번호 암호화
-        user.setPassword(encryptedPassword);
-        user.setEmail(email);
+        String username = user.getUsername();
+        user.setPassword(encoder.encode(user.getPassword()));
+        System.out.println(user);
         userRepository.save(user);
 
         // JWT 생성
@@ -35,16 +32,16 @@ public class AuthService {
 
         // Redis에 토큰 저장
         long expirationInMillis = jwtUtil.getExpiration(token) - System.currentTimeMillis();
-//        if (expirationInMillis > 0) {
-//            redisTemplate.opsForValue().set(
-//                    username,
-//                    token,
-//                    expirationInMillis, // 남은 만료 시간 (밀리초 단위),
-//                    TimeUnit.MILLISECONDS
-//            );
-//        } else {
-//            throw new IllegalStateException("Token has already expired");
-//        }
+        if (expirationInMillis > 0) {
+            redisTemplate.opsForValue().set(
+                    username,
+                    token,
+                    expirationInMillis, // 남은 만료 시간 (밀리초 단위),
+                    TimeUnit.MILLISECONDS
+            );
+        } else {
+            throw new IllegalStateException("Token has already expired");
+        }
 
         return token;
     }

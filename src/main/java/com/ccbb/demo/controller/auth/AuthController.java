@@ -1,5 +1,6 @@
 package com.ccbb.demo.controller.auth;
 
+import com.ccbb.demo.entity.User;
 import com.ccbb.demo.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ public class AuthController {
 
     // 회원가입 API
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
-        return authService.register(username, password, email);
+    public String register(@RequestBody User user) {
+        return authService.register(user);
     }
 }

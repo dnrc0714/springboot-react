@@ -7,18 +7,24 @@ spring:
   # Database
     datasource:
       driver-class-name: org.postgresql.Driver
-      url: jdbc:postgresql://34.47.85.142:5432/health
+      url: jdbc:postgresql://34.47.85.142:5432/health?currentSchema=public
       username: health
       password: K8o#<iu]OjMG+0ka
+      hikari:
+        maximum-pool-size: 10 # 최대 연결 수
+        minimum-idle: 5       # 최소 유휴 연결 수
+        idle-timeout: 30000   # 유휴 상태에서 연결을 유지하는 시간 (밀리초)
+        max-lifetime: 1800000 # 각 연결의 최대 수명 (밀리초)
+        connection-timeout: 30000 # 연결 대기 타임아웃 (밀리초)
   # jpa properties
     jpa:
       hibernate:
-        ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
+        ddl-auto: none # When you launch the application for the first time - switch "none" at "create"
       show-sql: true
       database: postgresql
       database-platform: org.hibernate.dialect.PostgreSQLDialect
       open-in-view: false
-      generate-ddl: true
+      generate-ddl: false
     data:
       redis:
         host: localhost
@@ -32,3 +38,17 @@ server:
 jwt:
   secret: qwrmlasfmlqw2491u4291urjeiqowfjkwklfnlksdnfi13fnou3nounf13
   expiration: 3600000  # 1 hour (밀리초 단위)
+
+logging:
+  level:
+    root: INFO # 모든 로그를 출력 (TRACE, DEBUG, INFO, WARN, ERROR)
+    org.springframework: INFO # Spring 내부 로그
+    org.hibernate: INFO # Hibernate 로그
+  file:
+    name: logs/application.log # 로그 파일 경로 설정
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n" # 콘솔 로그 포맷
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n" # 파일 로그 포맷
+  logback:
+    rollingpolicy:
+      max-history: 30 # 로그 파일 최대 보관 기간 (30일)
