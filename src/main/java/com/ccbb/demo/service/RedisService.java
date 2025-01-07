@@ -24,7 +24,7 @@ public class RedisService {
     }
 
     // Redis에서 Refresh Token 삭제
-    public void deleteRefreshToken(String username) {
-        redisTemplate.delete(REFRESH_TOKEN_PREFIX + username);
+    public void deleteRefreshToken(String refreshToken) {
+        redisTemplate.delete(refreshToken);
     }
 }

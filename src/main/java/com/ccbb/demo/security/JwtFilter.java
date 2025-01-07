@@ -28,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     // 인증이 필요 없는 URL 패턴들
     private static final List<String> UNAUTHENTICATED_URLS = Arrays.asList(
-            "/", "/login", "/register", "/public/", "/auth/login"
+            "/", "/login", "/register", "/public/", "/auth/login", "/auth/logout"
     );
 
     // 정적 리소스 확장자들

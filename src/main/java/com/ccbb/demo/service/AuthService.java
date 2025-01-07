@@ -79,7 +79,7 @@ public class AuthService {
         }
     }
 
-    public void logout(String username) {
-        redisService.deleteRefreshToken(username);
+    public void logout(String refreshToken) {
+        redisService.deleteRefreshToken(refreshToken);
     }
 }

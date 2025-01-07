@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -42,9 +44,17 @@ public class AuthController {
 
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestParam String username) {
-        // Redis에서 토큰 삭제
-        authService.logout(username);
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String refreshToken) {
+        // "Bearer " 접두사 제거
+        if (refreshToken != null && refreshToken.startsWith("Bearer ")) {
+            refreshToken = refreshToken.substring(7);
+        }
+
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            return ResponseEntity.badRequest().body("Refresh token is missing");
+        }
+
+        authService.logout(refreshToken);
         return ResponseEntity.ok("로그아웃 되었습니다.");
     }
 }
