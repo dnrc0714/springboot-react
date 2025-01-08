@@ -23,9 +23,14 @@ public class AuthService {
 
     @Transactional
     public String register(User user) {
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new RuntimeException("Username already exists");
+        if (userRepository.findById(user.getId()).isPresent()) {
+            throw new RuntimeException("이미 존재하는 아이디 입니다.");
         }
+
+        if (userRepository.findByNickname(user.getNickname()).isPresent()) {
+            throw new RuntimeException("이미 존재하는 닉네임 입니다.");
+        }
+
         String username = user.getUsername();
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -46,20 +51,20 @@ public class AuthService {
         return accessToken;
     }
 
-    public String[] authenticate(String username, String password) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));
+    public String[] authenticate(String id, String password) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + id));
         if(!encoder.matches(password, user.getPassword())) {
             throw new RuntimeException("아이디 혹은 비밀번호가 틀립니다.");
         }
 
 
         // Access Token과 Refresh Token 생성
-        String accessToken = jwtUtil.generateAccessToken(username);
-        String refreshToken = jwtUtil.generateRefreshToken(username);
+        String accessToken = jwtUtil.generateAccessToken(id);
+        String refreshToken = jwtUtil.generateRefreshToken(id);
 
         // Redis에 Refresh Token 저장
-        redisService.saveRefreshToken(username, refreshToken);
+        redisService.saveRefreshToken(id, refreshToken);
 
         return new String[]{accessToken, refreshToken};
     }
@@ -81,5 +86,13 @@ public class AuthService {
 
     public void logout(String refreshToken) {
         redisService.deleteRefreshToken(refreshToken);
+    }
+
+    public boolean isUserIdExists(String userId) {
+        return userRepository.findById(userId).isPresent();
+    }
+
+    public boolean isNicknameExists(String nickname) {
+        return userRepository.findByNickname(nickname).isPresent();
     }
 }

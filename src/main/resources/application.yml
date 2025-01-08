@@ -3,12 +3,13 @@ spring:
       name: ccbb
     web:
       resources:
-        static-locations: META-INF:/resources, classpath:/resources, classpath:/static/, classpath:/static/dist, classpath:/public/, file:/health_front/build
+        static-locations: META-INF:/resources, classpath:/resources, classpath:/static/, classpath:/static/dist, classpath:/public/, # file:/health_front/build
   # Database
     datasource:
       driver-class-name: org.postgresql.Driver
-      url: jdbc:postgresql://34.47.85.142:5432/health?currentSchema=public
-      username: health
+      # url: jdbc:postgresql://34.47.85.142:5432/health?currentSchema=public
+      url: jdbc:postgresql://localhost:5432/postgres
+      username: postgres
       password: K8o#<iu]OjMG+0ka
       hikari:
         maximum-pool-size: 10 # 최대 연결 수

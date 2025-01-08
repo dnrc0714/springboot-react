@@ -38,7 +38,7 @@ public class AuthController {
             String accessToken = authService.refreshAccessToken(refreshToken);
             return ResponseEntity.ok(accessToken);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(401).body("Invalid refresh token");
+            return ResponseEntity.status(401).body("올바르지 못한 로그인 정보입니다.");
         }
     }
 
@@ -56,5 +56,15 @@ public class AuthController {
 
         authService.logout(refreshToken);
         return ResponseEntity.ok("로그아웃 되었습니다.");
+    }
+
+    @PostMapping("/idDupChk")
+    public ResponseEntity<?> IdDupChk(@RequestParam String userId) {
+        return  ResponseEntity.ok(authService.isUserIdExists(userId));
+    }
+
+    @PostMapping("/nicknameDupChk")
+    public ResponseEntity<?> nicknameDupChk(@RequestParam String nickname) {
+        return  ResponseEntity.ok(authService.isNicknameExists(nickname));
     }
 }

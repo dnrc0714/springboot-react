@@ -10,11 +10,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig{
-    private final JwtFilter jwtFilter;
-
-    public SecurityConfig(JwtFilter jwtFilter) {
-        this.jwtFilter = jwtFilter;
-    }
+//    private final JwtFilter jwtFilter;
+//
+//    public SecurityConfig(JwtFilter jwtFilter) {
+//        this.jwtFilter = jwtFilter;
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

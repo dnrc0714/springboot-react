@@ -7,19 +7,26 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "HEALTH_POST")
+@Table(name = "health_post")
 public class Post {
     @Id
-    @Column(name = "id")
+    @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long postId;
 
+    @Column(name = "post_type")
     private String postType;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "content")
     private String content;
 
-    private Long createUserId;
-    private Date createDate;
-    private Long updateUserId;
-    private Date updateDate;
+    @Column(name = "creator_id")
+    private Long creatorId;
+
+    @Column(name = "updator_id")
+    private Long updatorId;
+
 }
