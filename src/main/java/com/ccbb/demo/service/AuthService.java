@@ -31,8 +31,17 @@ public class AuthService {
             throw new RuntimeException("이미 존재하는 닉네임 입니다.");
         }
 
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("이미 등록된 이메일 입니다.");
+        }
+
+        if (userRepository.findByNickname(user.getPhoneNumber()).isPresent()) {
+            throw new RuntimeException("이미 등록된 휴대전화번호 입니다.");
+        }
+
         String username = user.getUsername();
         user.setPassword(encoder.encode(user.getPassword()));
+        user.setPhoneNumber(user.getPhoneNumber().replaceAll("-", ""));
         userRepository.save(user);
 
         // JWT 생성

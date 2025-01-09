@@ -3,8 +3,11 @@ package com.ccbb.demo.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+
+import java.util.Date;
 
 
 @Entity
@@ -17,7 +20,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @NotBlank(message = "회원구분은 필수 입력 값입니다.")
+    @NotNull(message = "회원구분은 필수 입력 값입니다.")
     @Column(name = "user_tp")
     private Integer userTp;
 
@@ -29,13 +32,15 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @NotBlank(message = "전화번호 필수 입력 값입니다.")
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @NotBlank(message = "아이디는 필수 입력 값입니다.")
     @Column(name = "id")
     private String id;
 
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
-    @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",
-       message = "비밀번호는 영문 대,소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 20자의 비밀번호여야 합니다.")
     @Column(name = "password")
     private String password;
 
@@ -66,4 +71,7 @@ public class User {
 
     @Column(name = "agree_yn")
     private String agreeYn;
+
+    @Column(name = "birth_date")
+    private Date birthDate;
 }
