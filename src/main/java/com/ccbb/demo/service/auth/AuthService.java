@@ -1,13 +1,13 @@
-package com.ccbb.demo.service;
+package com.ccbb.demo.service.auth;
 
 import com.ccbb.demo.entity.User;
 import com.ccbb.demo.repository.UserRepository;
+import com.ccbb.demo.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.ccbb.demo.util.JwtUtil;
-import java.util.concurrent.TimeUnit;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +22,7 @@ public class AuthService {
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Transactional
-    public String register(User user) {
+    public String[] register(User user) {
         if (userRepository.findById(user.getId()).isPresent()) {
             throw new RuntimeException("이미 존재하는 아이디 입니다.");
         }
@@ -57,7 +57,7 @@ public class AuthService {
             throw new IllegalStateException("Token has already expired");
         }
 
-        return accessToken;
+        return new String[]{accessToken, refreshToken};
     }
 
     public String[] authenticate(String id, String password) {
@@ -103,5 +103,13 @@ public class AuthService {
 
     public boolean isNicknameExists(String nickname) {
         return userRepository.findByNickname(nickname).isPresent();
+    }
+
+    public boolean isEmailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    public boolean isPhoneNumberExists(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber).isPresent();
     }
 }

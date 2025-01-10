@@ -1,4 +1,4 @@
-package com.ccbb.demo.service;
+package com.ccbb.demo.service.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

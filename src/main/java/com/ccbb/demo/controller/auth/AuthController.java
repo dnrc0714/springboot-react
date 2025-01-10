@@ -1,12 +1,10 @@
 package com.ccbb.demo.controller.auth;
 
 import com.ccbb.demo.entity.User;
-import com.ccbb.demo.service.AuthService;
+import com.ccbb.demo.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -16,7 +14,7 @@ public class AuthController {
 
     // 회원가입 API
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
+    public String[] register(@RequestBody User user) {
         return authService.register(user);
     }
 
@@ -66,5 +64,17 @@ public class AuthController {
     @PostMapping("/nicknameDupChk")
     public ResponseEntity<?> nicknameDupChk(@RequestParam String nickname) {
         return  ResponseEntity.ok(authService.isNicknameExists(nickname));
+    }
+
+    @PostMapping("/emailDupChk")
+    public ResponseEntity<?> emailDupChk(@RequestParam String email) {
+        boolean isExists = authService.isEmailExists(email);
+            return  ResponseEntity.ok(isExists);
+    }
+
+    @PostMapping("/phoneNumberDupChk")
+    public ResponseEntity<?> phoneNumberDupChk(@RequestParam String phoneNumber) {
+        boolean isExists = authService.isPhoneNumberExists(phoneNumber);
+            return ResponseEntity.ok(isExists);
     }
 }
