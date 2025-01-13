@@ -20,4 +20,10 @@ public class PostController {
     public ResponseEntity<?> getPosts() {
         return ResponseEntity.ok(postService.getPostList());
     }
+
+    @PostMapping("/detail")
+    public ResponseEntity<?> getPostDetail() {
+
+        return ResponseEntity.ok(postService.getPostList());
+    }
 }

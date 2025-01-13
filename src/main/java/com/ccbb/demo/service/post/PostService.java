@@ -3,10 +3,12 @@ package com.ccbb.demo.service.post;
 import com.ccbb.demo.entity.Post;
 import com.ccbb.demo.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +24,12 @@ public class PostService {
             throw new RuntimeException(e);
         }
         return postList;
+    }
+
+    public Post getPostDetail(String postId) {
+            Post post = postRepository.findById(postId)
+                    .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다.: "));
+
+        return post;
     }
 }
