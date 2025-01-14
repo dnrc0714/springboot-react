@@ -14,8 +14,8 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Column(name = "post_type")
-    private String postType;
+    @Column(name = "post_tp")
+    private int postTp;
 
     @Column(name = "title")
     private String title;
@@ -28,5 +28,5 @@ public class Post {
 
     @Column(name = "updator_id")
     private Long updatorId;
-
 }
+

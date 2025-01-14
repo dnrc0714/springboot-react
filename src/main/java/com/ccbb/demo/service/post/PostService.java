@@ -26,10 +26,17 @@ public class PostService {
         return postList;
     }
 
-    public Post getPostDetail(String postId) {
-            Post post = postRepository.findById(postId)
+    public Post getPostDetail(Long postId) {
+            Post post = postRepository.findByPostId(postId)
                     .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다.: "));
 
         return post;
+    }
+
+    public Post savePost(String title, String content) {
+        Post post = new Post();
+        post.setTitle(title);
+        post.setContent(content);
+        return postRepository.save(post);
     }
 }

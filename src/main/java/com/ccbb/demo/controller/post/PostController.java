@@ -4,9 +4,7 @@ import com.ccbb.demo.entity.Post;
 import com.ccbb.demo.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,8 +20,13 @@ public class PostController {
     }
 
     @PostMapping("/detail")
-    public ResponseEntity<?> getPostDetail() {
+    public ResponseEntity<?> getPostDetail(Long id) {
+        return ResponseEntity.ok(postService.getPostDetail(id));
+    }
 
-        return ResponseEntity.ok(postService.getPostList());
+    @PostMapping("/save")
+    public ResponseEntity<?> savePost(@RequestPart(value = "title", required = true) String title,
+                                      @RequestPart(value = "content", required = true) String content) {
+        return ResponseEntity.ok(postService.savePost(title, content));
     }
 }
