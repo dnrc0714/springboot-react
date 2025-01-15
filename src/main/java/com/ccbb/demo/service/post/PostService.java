@@ -5,6 +5,8 @@ import com.ccbb.demo.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +35,15 @@ public class PostService {
         return post;
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Post savePost(String title, String content) {
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
+
         return postRepository.save(post);
     }
+
+
+
 }
