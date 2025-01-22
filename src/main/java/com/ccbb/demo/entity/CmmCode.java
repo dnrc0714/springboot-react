@@ -11,7 +11,7 @@ public class CmmCode {
     @Column(name = "cmm_code")
     private String code;
 
-    @Column(name = "code_name")
+    @Column(name = "cmm_codename")
     private String codeName;
 
     @Column(name = "creator_id")

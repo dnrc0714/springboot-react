@@ -14,13 +14,13 @@ public class RedisService {
     private StringRedisTemplate redisTemplate;
 
     // Refresh Token을 Redis에 저장
-    public void saveRefreshToken(String username, String refreshToken) {
-        redisTemplate.opsForValue().set(REFRESH_TOKEN_PREFIX + username, refreshToken, 7, TimeUnit.DAYS); // Refresh Token 유효기간 7일
+    public void saveRefreshToken(String id, String refreshToken) {
+        redisTemplate.opsForValue().set(REFRESH_TOKEN_PREFIX + id, refreshToken, 7, TimeUnit.DAYS); // Refresh Token 유효기간 7일
     }
 
     // Redis에서 Refresh Token 조회
-    public String getRefreshToken(String username) {
-        return redisTemplate.opsForValue().get(REFRESH_TOKEN_PREFIX + username);
+    public String getRefreshToken(String id) {
+        return redisTemplate.opsForValue().get(REFRESH_TOKEN_PREFIX + id);
     }
 
     // Redis에서 Refresh Token 삭제

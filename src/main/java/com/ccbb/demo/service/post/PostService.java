@@ -1,22 +1,27 @@
 package com.ccbb.demo.service.post;
 
+import com.ccbb.demo.dto.post.PostRequest;
 import com.ccbb.demo.entity.Post;
+import com.ccbb.demo.entity.User;
 import com.ccbb.demo.repository.PostRepository;
+import com.ccbb.demo.repository.UserRepository;
+import com.ccbb.demo.service.auth.AuthService;
+import com.ccbb.demo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
-
     private final PostRepository postRepository;
+
+    private final AuthService authService;
+
 
     public List<Post> getPostList() {
         List<Post> postList = new ArrayList<>();
@@ -36,14 +41,26 @@ public class PostService {
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Post savePost(String title, String content) {
-        Post post = new Post();
-        post.setTitle(title);
-        post.setContent(content);
+    public Post savePost(PostRequest request){
+        System.out.println(request.getRefreshToken());
+        User user = authService.jwtTokenToUser(request.getRefreshToken());
 
-        return postRepository.save(post);
+            long userId = user.getUserId();
+
+            Post post = Post.builder()
+                    .title(request.getTitle())
+                    .content(request.getContent())
+                    .postTp(request.getPostTp())
+                    .creatorId(userId)
+                    .updaterId(userId)
+                    .build();
+
+            return postRepository.save(post);
     }
 
 
-
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public int deletePost(Long postId) {
+        return postRepository.deleteByPostId(postId);
+    }
 }

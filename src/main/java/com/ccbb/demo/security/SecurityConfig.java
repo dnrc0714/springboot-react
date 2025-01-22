@@ -22,11 +22,13 @@ public class SecurityConfig{
                         .disable()  // CSRF 비활성화
                 )
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/auth/register", "/auth/login").permitAll()  // 로그인과 회원가입 경로는 접근 허용
+                        .requestMatchers("/").permitAll()  // 로그인과 회원가입 경로는 접근 허용
                         .anyRequest().permitAll()  // 나머지 요청은 인증 필요
                 )
                 .formLogin(form -> form
-                        .disable()  // 기본 로그인 화면 비활성화
+                        .loginPage("/login").disable()
+//                        .loginProcessingUrl("/auth/login")
+//                        .permitAll()
                 )
                 .logout(logout -> logout
                         .permitAll()  // 로그아웃은 누구나 접근 가능
