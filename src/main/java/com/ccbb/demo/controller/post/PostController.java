@@ -28,12 +28,7 @@ public class PostController {
 
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> savePost(@ModelAttribute @RequestBody PostRequest request) {
-        System.out.println(request.getRefreshToken());
-        if (postService.savePost(request) == null) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            return ResponseEntity.ok(postService.savePost(request));
-        }
+        return ResponseEntity.ok(postService.savePost(request));
     }
 
     @PostMapping(value = "/delete")

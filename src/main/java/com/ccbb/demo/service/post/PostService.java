@@ -25,6 +25,7 @@ public class PostService {
 
     public List<Post> getPostList() {
         List<Post> postList = new ArrayList<>();
+
         try {
             postList = postRepository.findAll();
         } catch (RuntimeException e) {
@@ -42,7 +43,6 @@ public class PostService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Post savePost(PostRequest request){
-        System.out.println(request.getRefreshToken());
         User user = authService.jwtTokenToUser(request.getRefreshToken());
 
             long userId = user.getUserId();

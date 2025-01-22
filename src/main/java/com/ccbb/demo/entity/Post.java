@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
 import java.util.Date;
@@ -33,12 +35,14 @@ public class Post {
     @Column(name = "creator_id")
     private Long creatorId;
 
+    @CreationTimestamp
     @Column(name = "created_at", columnDefinition = "TIMESTAMPTZ")
     private OffsetDateTime createdAt;
 
     @Column(name = "updater_id")
     private Long updaterId;
 
+    @UpdateTimestamp
     @Column(name = "updated_at", columnDefinition = "TIMESTAMPTZ")
     private OffsetDateTime updatedAt;
 
