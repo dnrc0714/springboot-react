@@ -8,6 +8,7 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 public class PostRequest {
+    private Long postId;
     private int postTp;
     private String title;
     private String content;

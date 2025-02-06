@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,15 +48,21 @@ public class PostService {
 
             long userId = user.getUserId();
 
-            Post post = Post.builder()
+            Post.PostBuilder postBuilder = Post.builder()
                     .title(request.getTitle())
                     .content(request.getContent())
                     .postTp(request.getPostTp())
                     .creatorId(userId)
+                    .createdAt(OffsetDateTime.now())
                     .updaterId(userId)
-                    .build();
+                    .updatedAt(OffsetDateTime.now());
+            if(request.getPostId() != null) {
+                postBuilder.postId(request.getPostId());
+            }
+            Post post = postBuilder.build();
+            postRepository.save(post);
 
-            return postRepository.save(post);
+            return post;
     }
 
 

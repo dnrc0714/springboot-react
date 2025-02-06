@@ -118,11 +118,10 @@ public class AuthService {
 
     public User jwtTokenToUser(String token) {
         Map<String, String> jwtData = jwtUtil.jwtData(token);
-        logger.debug(token);
 
-        Optional<User> user = userRepository.findById(jwtData.get("id"));
+        Optional<User> optionalUser = userRepository.findById(jwtData.get("id"));
 
-        return user.get();
+        return optionalUser.orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public void logout(String refreshToken) {

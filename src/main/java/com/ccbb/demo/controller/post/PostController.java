@@ -22,7 +22,7 @@ public class PostController {
     }
 
     @PostMapping(value = "/detail")
-    public ResponseEntity<?> getPostDetail(@RequestParam Long id) {
+    public ResponseEntity<?> getPostDetail(@RequestParam("postId") Long id) {
         return ResponseEntity.ok(postService.getPostDetail(id));
     }
 
