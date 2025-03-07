@@ -42,7 +42,6 @@ public class AuthController {
         }
     }
 
-
     @PostMapping(value = "/logout")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String refreshToken) {
         // "Bearer " 접두사 제거

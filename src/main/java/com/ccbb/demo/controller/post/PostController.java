@@ -16,9 +16,9 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    @PostMapping(value = "/list")
-    public ResponseEntity<?> getPosts() {
-        return ResponseEntity.ok(postService.getPostList());
+    @GetMapping(value = "/list")
+    public ResponseEntity<?> getPosts(@RequestParam("postTp") String postTp) {
+        return ResponseEntity.ok(postService.getPostList(postTp));
     }
 
     @PostMapping(value = "/detail")
@@ -32,7 +32,7 @@ public class PostController {
     }
 
     @PostMapping(value = "/delete")
-    public ResponseEntity<?> deletePost(@RequestParam Long id) {
+    public ResponseEntity<?> deletePost(@RequestParam("postId") Long id) {
         return ResponseEntity.ok(postService.deletePost(id));
     }
 }

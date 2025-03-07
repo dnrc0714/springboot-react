@@ -24,7 +24,7 @@ public class Post {
     private Long postId;
 
     @Column(name = "post_tp")
-    private int postTp;
+    private String postTp;
 
     @Column(name = "title")
     private String title;

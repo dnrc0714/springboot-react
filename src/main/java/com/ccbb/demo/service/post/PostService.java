@@ -24,11 +24,11 @@ public class PostService {
     private final AuthService authService;
 
 
-    public List<Post> getPostList() {
+    public List<Post> getPostList(String postTp) {
         List<Post> postList = new ArrayList<>();
 
         try {
-            postList = postRepository.findAll();
+            postList = postRepository.findByPostTp(postTp);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }

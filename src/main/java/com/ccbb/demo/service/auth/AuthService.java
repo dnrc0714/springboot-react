@@ -72,17 +72,18 @@ public class AuthService {
                 .role("ROLE_USER")
                 .build();
 
+        User saveUser = userRepository.save(user);
+        
         // JWT 생성
         // JWT 토큰 생성 (Access Token)
-        String accessToken = jwtUtil.generateAccessToken(user.getId(), user.getUsername(), user.getUsername(), user.getRole());
-        String refreshToken = jwtUtil.generateRefreshToken(user.getId() , user.getUsername(), user.getUsername(), user.getRole());
+        String accessToken = jwtUtil.generateAccessToken(saveUser.getUserId(), saveUser.getId(), saveUser.getUsername(), saveUser.getUsername(), saveUser.getRole());
+        String refreshToken = jwtUtil.generateRefreshToken(saveUser.getUserId(), saveUser.getId() , saveUser.getUsername(), saveUser.getUsername(), saveUser.getRole());
 
-        userRepository.save(user);
 
         // Redis에 토큰 저장
         long expirationInMillis = jwtUtil.getExpiration(refreshToken) - System.currentTimeMillis();
         if (expirationInMillis > 0) {
-            redisService.saveRefreshToken(user.getId(), refreshToken); // Redis에 Refresh Token 저장
+            redisService.saveRefreshToken(user.getUserId().toString(), refreshToken); // Redis에 Refresh Token 저장
         } else {
             throw new IllegalStateException("Token has already expired");
         }
@@ -99,11 +100,11 @@ public class AuthService {
         }
 
         // Access Token과 Refresh Token 생성
-        String accessToken = jwtUtil.generateAccessToken(user.getId(), user.getUsername(), user.getUsername(), user.getRole());
-        String refreshToken = jwtUtil.generateRefreshToken(user.getId(), user.getUsername(), user.getUsername(), user.getRole());
+        String accessToken = jwtUtil.generateAccessToken(user.getUserId(), user.getId(), user.getUsername(), user.getNickname(), user.getRole());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getUserId(), user.getId(), user.getUsername(), user.getNickname(), user.getRole());
 
         // Redis에 Refresh Token 저장
-        redisService.saveRefreshToken(user.getId(), refreshToken);
+        redisService.saveRefreshToken(user.getUserId().toString(), refreshToken);
 
         return new String[]{accessToken, refreshToken};
     }
@@ -113,13 +114,14 @@ public class AuthService {
         Map<String, String> jwtData = jwtUtil.jwtData(refreshToken);
 
         // Refresh Token이 유효하다면 새로운 Access Token 발급
-        return jwtUtil.generateAccessToken(jwtData.get("id"), jwtData.get("username"), jwtData.get("nickname"), jwtData.get("role"));
+        return jwtUtil.generateAccessToken(Long.parseLong(jwtData.get("userId")), jwtData.get("id"), jwtData.get("username"), jwtData.get("nickname"), jwtData.get("role"));
     }
 
     public User jwtTokenToUser(String token) {
         Map<String, String> jwtData = jwtUtil.jwtData(token);
 
         Optional<User> optionalUser = userRepository.findById(jwtData.get("id"));
+        System.out.println(jwtData);
 
         return optionalUser.orElseThrow(() -> new RuntimeException("User not found"));
     }

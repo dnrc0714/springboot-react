@@ -38,9 +38,11 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(keyBytes); // Secret Key를 이용하여 Key 객체 생성
     }
 
-    public String generateAccessToken(String id, String username, String nickName, String role) {
+    public String generateAccessToken(Long userId, String id, String username, String nickName, String role) {
         return Jwts.builder()
-                .setSubject(id)
+                .setSubject(userId.toString())
+                .claim("userId", userId)
+                .claim("id", id)
                 .claim("username", username)
                 .claim("nickName", nickName)
                 .claim("role", role)
@@ -51,9 +53,11 @@ public class JwtUtil {
     }
 
     // Refresh Token 생성
-    public String generateRefreshToken(String id, String username, String nickName, String role) {
+    public String generateRefreshToken(Long userId, String id, String username, String nickName, String role) {
         return Jwts.builder()
-                .setSubject(id)
+                .setSubject(userId.toString())
+                .claim("userId", userId)
+                .claim("id", id)
                 .claim("username", username)
                 .claim("nickName", nickName)
                 .claim("role", role)
@@ -97,20 +101,29 @@ public class JwtUtil {
 
     public Map<String, String> jwtData(String refreshToken) {
         Map<String, String> result = new HashMap<>();
-        String id = this.getClaims(refreshToken).getSubject();
+        String userId = this.getClaims(refreshToken).getSubject();
+        System.out.println("userId : " + userId);
 
         // Redis에서 해당 사용자의 Refresh Token 가져오기
 
-        String storedRefreshToken = redisService.getRefreshToken(id);
+        String storedRefreshToken = redisService.getRefreshToken(userId);
+
+        System.out.println("storedRefreshToken : " + storedRefreshToken);
 
         if (storedRefreshToken != null && storedRefreshToken.equals(refreshToken)) {
             try {
                 var claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(storedRefreshToken).getBody();
 
+                String id = claims.get("id", String.class);
                 String username = claims.get("username", String.class);
                 String nickname = claims.get("nickname", String.class);
                 String role = claims.get("role", String.class);
 
+                System.out.println("------ : " + id);
+                System.out.println("------ : " + username);
+
+
+                result.put("userId", userId);
                 result.put("id", id);
                 result.put("username", username);
                 result.put("nickname", nickname);

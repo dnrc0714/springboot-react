@@ -27,12 +27,13 @@ repositories {
 
 dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.boot:spring-boot-security-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//     implementation 'org.hibernate.orm:hibernate-core:6.3.1.Final' // 최신 Hibernate 버전
     implementation 'org.postgresql:postgresql:42.7.3'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -53,39 +54,45 @@ def frontendDir = "$projectDir/src/main/health-front"
 
 sourceSets {
     main {
-        resources { srcDirs = ["$projectDir/src/main/resources"]
+        resources {
+            srcDirs = ["$projectDir/src/main/resources"]
         }
     }
 }
 
-processResources { dependsOn "copyReactBuildFiles" }
+processResources {
+    dependsOn "copyReactBuildFiles"
+}
 
 task installReact(type: Exec) {
     workingDir "$frontendDir"
     inputs.dir "$frontendDir"
     group = BasePlugin.BUILD_GROUP
+
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "audit", "fix"
-        commandLine 'npm.cmd', 'install' }
-    else {
-        commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
+        commandLine "cmd", "/c", "npm install"
+    } else {
+        commandLine "sh", "-c", "npm install"
     }
 }
 
 task buildReact(type: Exec) {
-    dependsOn "installReact"
-    workingDir "$frontendDir"
-    inputs.dir "$frontendDir"
+    dependsOn installReact
+    workingDir frontendDir
+    inputs.dir frontendDir
     group = BasePlugin.BUILD_GROUP
+
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "run-script", "build"
+        commandLine "cmd", "/c", "npm run build"
     } else {
-        commandLine "npm", "run-script", "build"
+        commandLine "sh", "-c", "npm run build"
     }
 }
 
 task copyReactBuildFiles(type: Copy) {
-    dependsOn "buildReact"
-    from "$frontendDir/build"
+    dependsOn buildReact
+    from "$frontendDir/dist"
     into "$projectDir/src/main/resources/static"
 }
+
+processResources.dependsOn copyReactBuildFiles
