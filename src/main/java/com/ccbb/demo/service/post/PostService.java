@@ -23,7 +23,6 @@ public class PostService {
 
     private final AuthService authService;
 
-
     public List<Post> getPostList(String postTp) {
         List<Post> postList = new ArrayList<>();
 
