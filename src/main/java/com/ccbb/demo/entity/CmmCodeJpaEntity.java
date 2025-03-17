@@ -1,13 +1,12 @@
 package com.ccbb.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
 @Table(name = "cmm_code")
-public class CmmCode {
+public class CmmCodeJpaEntity {
     @Id
     @Column(name = "cmm_code")
     private String code;
@@ -18,8 +17,8 @@ public class CmmCode {
     @Column(name = "creator_id")
     private Long creatorId;
 
-    @Column(name = "updator_id")
-    private Long updatorId;
+    @Column(name = "updater_id")
+    private Long updaterId;
 
     @Column(name = "sys_code")
     private String sysCode;

@@ -1,4 +1,4 @@
-package com.ccbb.demo.post.adapter.in.web.request;
+package com.ccbb.demo.comment.adapter.in.web.request;
 
 import lombok.Builder;
 

@@ -1,6 +1,6 @@
 package com.ccbb.demo.dto.auth;
 
-import com.ccbb.demo.entity.User;
+import com.ccbb.demo.entity.UserJpaEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +11,5 @@ public class SignInResponse {
     private String accessToken;
     private String refreshToken;
 
-    private User user;
+    private UserJpaEntity user;
 }

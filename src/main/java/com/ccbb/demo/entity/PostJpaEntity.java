@@ -1,5 +1,6 @@
 package com.ccbb.demo.entity;
 
+import com.ccbb.demo.comment.adapter.out.persistence.CommentJpaEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "health_post")
-public class Post {
+public class PostJpaEntity {
     @Id
     @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,5 +50,15 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id", insertable = false, updatable = false)
-    private User creator;
+    private UserJpaEntity creator;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private final List<CommentJpaEntity> comments = new ArrayList<>();
+
+    public record PostId(Long value) {}
+
+    public void createComment(CommentJpaEntity commentJpaEntity){
+        comments.add(commentJpaEntity);
+    }
+
 }

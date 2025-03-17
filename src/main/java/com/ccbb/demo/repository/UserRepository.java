@@ -1,19 +1,19 @@
 package com.ccbb.demo.repository;
 
 
-import com.ccbb.demo.entity.User;
+import com.ccbb.demo.entity.UserJpaEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findById(String id);
+public interface UserRepository extends JpaRepository<UserJpaEntity, Long> {
+    Optional<UserJpaEntity> findById(String id);
 
-    Optional<User> findByNickname(String nickname);
+    Optional<UserJpaEntity> findByNickname(String nickname);
 
-    Optional<User> findByEmail(String email);
+    Optional<UserJpaEntity> findByEmail(String email);
 
-    Optional<User> findByPhoneNumber(String phoneNumber);
+    Optional<UserJpaEntity> findByPhoneNumber(String phoneNumber);
 
 }

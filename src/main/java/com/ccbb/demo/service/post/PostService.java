@@ -1,12 +1,10 @@
 package com.ccbb.demo.service.post;
 
 import com.ccbb.demo.dto.post.PostRequest;
-import com.ccbb.demo.entity.Post;
-import com.ccbb.demo.entity.User;
+import com.ccbb.demo.entity.PostJpaEntity;
+import com.ccbb.demo.entity.UserJpaEntity;
 import com.ccbb.demo.repository.PostRepository;
-import com.ccbb.demo.repository.UserRepository;
 import com.ccbb.demo.service.auth.AuthService;
-import com.ccbb.demo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -23,8 +21,8 @@ public class PostService {
 
     private final AuthService authService;
 
-    public List<Post> getPostList(String postTp) {
-        List<Post> postList = new ArrayList<>();
+    public List<PostJpaEntity> getPostList(String postTp) {
+        List<PostJpaEntity> postList = new ArrayList<>();
 
         try {
             postList = postRepository.findByPostTp(postTp);
@@ -34,20 +32,20 @@ public class PostService {
         return postList;
     }
 
-    public Post getPostDetail(Long postId) {
-            Post post = postRepository.findByPostId(postId)
+    public PostJpaEntity getPostDetail(Long postId) {
+            PostJpaEntity post = postRepository.findByPostId(postId)
                     .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다.: "));
 
         return post;
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Post savePost(PostRequest request){
-        User user = authService.jwtTokenToUser(request.getRefreshToken());
+    public PostJpaEntity savePost(PostRequest request){
+        UserJpaEntity user = authService.jwtTokenToUser(request.getRefreshToken());
 
             long userId = user.getUserId();
 
-            Post.PostBuilder postBuilder = Post.builder()
+            PostJpaEntity.PostJpaEntityBuilder postBuilder = PostJpaEntity.builder()
                     .title(request.getTitle())
                     .content(request.getContent())
                     .postTp(request.getPostTp())
@@ -58,7 +56,7 @@ public class PostService {
             if(request.getPostId() != null) {
                 postBuilder.postId(request.getPostId());
             }
-            Post post = postBuilder.build();
+            PostJpaEntity post = postBuilder.build();
             postRepository.save(post);
 
             return post;

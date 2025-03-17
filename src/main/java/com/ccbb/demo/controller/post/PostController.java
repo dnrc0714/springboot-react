@@ -1,14 +1,11 @@
 package com.ccbb.demo.controller.post;
 
 import com.ccbb.demo.dto.post.PostRequest;
-import com.ccbb.demo.entity.Post;
 import com.ccbb.demo.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/post")

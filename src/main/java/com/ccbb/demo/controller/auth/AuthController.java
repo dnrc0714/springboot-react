@@ -2,7 +2,7 @@ package com.ccbb.demo.controller.auth;
 
 import com.ccbb.demo.dto.auth.SignInRequest;
 import com.ccbb.demo.dto.auth.SignUpRequest;
-import com.ccbb.demo.entity.User;
+import com.ccbb.demo.entity.UserJpaEntity;
 import com.ccbb.demo.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

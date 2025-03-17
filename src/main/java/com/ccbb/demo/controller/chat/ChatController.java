@@ -23,7 +23,9 @@ public class ChatController {
                 .from(chatMessage.from())
                 .roomId(roomId)
                 .build();
+
         Long chatId = chatMessageCreateUseCase.createChatMessage(chatMessageCreateCommand); // DB에 등록 후 Chat Message Id 반환
+
         ChatMessageResponse chatMessageResponse = ChatMessageResponse.builder()
                 .id(chatId)
                 .content(chatMessage.text())

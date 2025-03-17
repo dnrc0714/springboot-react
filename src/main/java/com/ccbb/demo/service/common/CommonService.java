@@ -1,6 +1,6 @@
 package com.ccbb.demo.service.common;
 
-import com.ccbb.demo.entity.CmmCode;
+import com.ccbb.demo.entity.CmmCodeJpaEntity;
 import com.ccbb.demo.repository.CommonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.List;
 public class CommonService {
     private final CommonRepository commonRepository;
 
-    public List<CmmCode> getCmmCode(String code) {
+    public List<CmmCodeJpaEntity> getCmmCode(String code) {
         return commonRepository.findBySysCodeOrderBySeq(code);
     }
 }

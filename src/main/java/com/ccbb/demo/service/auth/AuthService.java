@@ -2,7 +2,7 @@ package com.ccbb.demo.service.auth;
 
 import com.ccbb.demo.dto.auth.SignInRequest;
 import com.ccbb.demo.dto.auth.SignUpRequest;
-import com.ccbb.demo.entity.User;
+import com.ccbb.demo.entity.UserJpaEntity;
 import com.ccbb.demo.repository.UserRepository;
 import com.ccbb.demo.service.redis.RedisService;
 import io.jsonwebtoken.JwtException;
@@ -52,7 +52,7 @@ public class AuthService {
             throw new RuntimeException("이미 등록된 휴대전화번호 입니다.");
         }
 
-        User user = User.builder()
+        UserJpaEntity user = UserJpaEntity.builder()
                 .id(request.getId())
                 .password(encoder.encode(request.getPassword()))
                 .userTp(request.getUserTp())
@@ -72,7 +72,7 @@ public class AuthService {
                 .role("ROLE_USER")
                 .build();
 
-        User saveUser = userRepository.save(user);
+        UserJpaEntity saveUser = userRepository.save(user);
         
         // JWT 생성
         // JWT 토큰 생성 (Access Token)
@@ -92,7 +92,7 @@ public class AuthService {
     }
 
     public String[] authenticate(SignInRequest request) {
-        User user = userRepository.findById(request.getId())
+        UserJpaEntity user = userRepository.findById(request.getId())
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + request.getId()));
 
         if(!encoder.matches(request.getPassword(), user.getPassword())) {
@@ -117,10 +117,10 @@ public class AuthService {
         return jwtUtil.generateAccessToken(Long.parseLong(jwtData.get("userId")), jwtData.get("id"), jwtData.get("username"), jwtData.get("nickname"), jwtData.get("role"));
     }
 
-    public User jwtTokenToUser(String token) {
+    public UserJpaEntity jwtTokenToUser(String token) {
         Map<String, String> jwtData = jwtUtil.jwtData(token);
 
-        Optional<User> optionalUser = userRepository.findById(jwtData.get("id"));
+        Optional<UserJpaEntity> optionalUser = userRepository.findById(jwtData.get("id"));
         System.out.println(jwtData);
 
         return optionalUser.orElseThrow(() -> new RuntimeException("User not found"));
