@@ -18,13 +18,13 @@ public class LoadChatMessageService implements ChatMessageLoadUseCase {
     private final LoadChatMessagePort loadChatMessagePort;
     @Override
     public List<ChatMessageResponse> getChatMessageList(ChatMessageListQuery query) {
-        PageRequest pageRequest = PageRequest.of(query.page(), query.size(), Sort.by("chatMessageId").descending());
+        PageRequest pageRequest = PageRequest.of(query.page(), query.size(), Sort.by("id").descending());
         return loadChatMessagePort.loadChatMessegeList(query.roomId(), pageRequest)
                 .stream().map((chatMessage)->
                         ChatMessageResponse.builder()
                                 .id(chatMessage.getChatId().value())
                                 .content(chatMessage.getContent())
-                                .writer(chatMessage.getWriter())
+                                .creatorNickName(chatMessage.getCreatorNickName())
                                 .build())
                 .collect(Collectors.toList());
     }

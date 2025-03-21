@@ -6,10 +6,11 @@ import lombok.*;
 @Getter
 @Builder
 public class ChatMessage{
-    private ChatId chatId;
-    private String writer;
+    private id chatId;
     private String content;
-    private ChatRoom.RoomId chatRoomId;
-    public record ChatId(Long value) {
+    private Long creatorId;
+    private String creatorNickName;
+    private ChatRoom.id chatRoomId;
+    public record id(Long value) {
     }
 }

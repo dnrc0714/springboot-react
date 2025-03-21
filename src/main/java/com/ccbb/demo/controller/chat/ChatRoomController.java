@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/rooms")
+@RequestMapping("/rooms")
 public class ChatRoomController {
     private final ChatRoomCreateUseCase chatRoomCreateUseCase;
     private final ChatRoomLoadUseCase chatRoomLoadUseCase;

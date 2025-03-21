@@ -8,8 +8,10 @@ import java.util.List;
 @Getter
 @Builder
 public class ChatRoom {
-    private RoomId roomId;
+    private id id;
+    private String name;
+    private String creator_id;
     private List<ChatMessage> messageList;
-    public record RoomId(Long value) {
+    public record id(Long value) {
     }
 }

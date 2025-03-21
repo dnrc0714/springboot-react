@@ -5,22 +5,24 @@ import com.ccbb.demo.chat.adapter.in.web.dto.ChatMessageResponse;
 import com.ccbb.demo.chat.application.port.in.ChatMessageCreateUseCase;
 import com.ccbb.demo.chat.application.port.in.command.ChatMessageCreateCommand;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
-@RestController
+@Slf4j
+@Controller
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatMessageCreateUseCase chatMessageCreateUseCase;
     @MessageMapping("/chat/rooms/{roomId}/send")
     @SendTo("/topic/public/rooms/{roomId}")
-    public ChatMessageResponse sendMessage(@DestinationVariable Long roomId, @Payload ChatMessageRequest chatMessage) {
+    public ChatMessageResponse sendMessage(@DestinationVariable("roomId") Long roomId, @Payload ChatMessageRequest chatMessage) {
         ChatMessageCreateCommand chatMessageCreateCommand = ChatMessageCreateCommand.builder()
                 .content(chatMessage.text())
-                .from(chatMessage.from())
+                .creatorId(chatMessage.creatorId())
                 .roomId(roomId)
                 .build();
 
@@ -29,7 +31,7 @@ public class ChatController {
         ChatMessageResponse chatMessageResponse = ChatMessageResponse.builder()
                 .id(chatId)
                 .content(chatMessage.text())
-                .writer(chatMessage.from())
+                .creatorNickName(chatMessage.creatorNickName())
                 .build();
         return chatMessageResponse;
     }

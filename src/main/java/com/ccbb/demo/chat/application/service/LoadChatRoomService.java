@@ -27,17 +27,17 @@ public class LoadChatRoomService implements ChatRoomLoadUseCase {
         ChatRoom chatRoom = loadChatRoomPort.loadById(chatRoomQuery.id(), pageRequest);
 
         return ChatRoomResponse.builder()
-                .roomId(chatRoom.getRoomId().value())
+                .roomId(chatRoom.getId().value())
                 .build();
     }
 
     @Override
     public ChatRoomListReadResponse getChatRoomList(ChatRoomListQuery query) {
-        PageRequest pageRequest = PageRequest.of(query.page(), query.size(), Sort.by("chatRoomId").descending());
+        PageRequest pageRequest = PageRequest.of(query.page(), query.size(), Sort.by("id").descending());
         List<ChatRoom> chatRoomList = loadChatRoomPort.search(pageRequest);
         ChatRoomListReadResponse response = ChatRoomListReadResponse.builder()
                 .messageList(chatRoomList.stream().map(chatRoom -> ChatRoomItemResponse.builder()
-                                .roomId(chatRoom.getRoomId().value())
+                                .roomId(chatRoom.getId().value())
                                 .build())
                         .collect(Collectors.toList()))
                 .build();

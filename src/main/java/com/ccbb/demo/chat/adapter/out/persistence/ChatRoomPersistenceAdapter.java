@@ -15,6 +15,7 @@ public class ChatRoomPersistenceAdapter implements CreateChatRoomPort {
     @Override
     public boolean createChatRoom(ChatRoom chatRoom) {
         ChatRoomJpaEntity chatRoomJpaEntity = ChatRoomJpaEntity.builder()
+                .name(chatRoom.getName())
                 .build();
         springDataChatRoomRepository.save(chatRoomJpaEntity);
         return true;

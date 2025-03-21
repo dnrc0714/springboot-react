@@ -19,9 +19,9 @@ class CreateChatMessageService implements ChatMessageCreateUseCase {
     @Override
     public Long createChatMessage(ChatMessageCreateCommand command) {
         ChatMessage chatMessage = ChatMessage.builder()
-                .chatRoomId(new ChatRoom.RoomId(command.roomId()))
+                .chatRoomId(new ChatRoom.id(command.roomId()))
                 .content(command.content())
-                .writer(command.from())
+                .creatorId(command.creatorId())
                 .build();
         return createChatMessagePort.createChatMessage(chatMessage);
     }

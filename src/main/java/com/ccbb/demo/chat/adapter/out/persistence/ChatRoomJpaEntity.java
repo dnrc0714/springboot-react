@@ -1,10 +1,7 @@
 package com.ccbb.demo.chat.adapter.out.persistence;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
@@ -14,13 +11,16 @@ import java.util.List;
 @Getter
 @Table(name = "chat_rooms")
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class ChatRoomJpaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "chat_room_id")
-    private Long chatRoomId;
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
 
     //    @BatchSize(size = 10)
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

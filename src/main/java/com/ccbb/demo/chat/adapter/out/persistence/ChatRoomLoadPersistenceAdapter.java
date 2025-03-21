@@ -19,7 +19,7 @@ public class ChatRoomLoadPersistenceAdapter implements LoadChatRoomPort {
         ChatRoomJpaEntity chatRoomJpaEntity = springDataChatRoomRepository.findById(roomId)
                 .orElseThrow(RuntimeException::new);
         return ChatRoom.builder()
-                .roomId(new ChatRoom.RoomId(chatRoomJpaEntity.getChatRoomId()))
+                .id(new ChatRoom.id(chatRoomJpaEntity.getId()))
                 .build();
     }
 
@@ -28,7 +28,7 @@ public class ChatRoomLoadPersistenceAdapter implements LoadChatRoomPort {
         Slice<ChatRoomJpaEntity> chatRoomJpaEntityList = springDataChatRoomRepository.findAllBy(pageRequest);
         return chatRoomJpaEntityList.stream()
                 .map(chatRoomJpaEntity -> ChatRoom.builder()
-                        .roomId(new ChatRoom.RoomId(chatRoomJpaEntity.getChatRoomId()))
+                        .id(new ChatRoom.id(chatRoomJpaEntity.getId()))
                         .build())
                 .collect(Collectors.toList());
     }

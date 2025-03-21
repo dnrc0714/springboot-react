@@ -73,7 +73,7 @@ sourceSets {
 }
 
 processResources {
-    dependsOn "copyReactBuildFiles"
+    dependsOn "buildReact"
 }
 
 task installReact(type: Exec) {
@@ -101,10 +101,10 @@ task buildReact(type: Exec) {
     }
 }
 
-task copyReactBuildFiles(type: Copy) {
+/*task copyReactBuildFiles(type: Copy) {
     dependsOn buildReact
     from "$frontendDir/dist"
     into "$projectDir/src/main/resources/static"
-}
+}*/
 
-processResources.dependsOn copyReactBuildFiles
+processResources.dependsOn buildReact
