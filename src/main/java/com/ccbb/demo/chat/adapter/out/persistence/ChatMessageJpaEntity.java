@@ -19,27 +19,23 @@ public class ChatMessageJpaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long Id;
+    private Long id;
 
     @Column(name = "content")
     private String content;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id", insertable = false, updatable = false)
     private UserJpaEntity creator;
 
     @Column(name = "creator_id")
     private Long creatorId;
 
-    @Column(name = "createdAt")
+    @Column(name = "created_at")
     private OffsetDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id", nullable = false) // FK 설정
     private ChatRoomJpaEntity chatRoom;
 
-    public ChatMessageJpaEntity(String content, ChatRoomJpaEntity chatRoom) {
-        this.content = content;
-        this.chatRoom = chatRoom;
-    }
 }

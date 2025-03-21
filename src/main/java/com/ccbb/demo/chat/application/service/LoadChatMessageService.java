@@ -19,6 +19,7 @@ public class LoadChatMessageService implements ChatMessageLoadUseCase {
     @Override
     public List<ChatMessageResponse> getChatMessageList(ChatMessageListQuery query) {
         PageRequest pageRequest = PageRequest.of(query.page(), query.size(), Sort.by("id").descending());
+
         return loadChatMessagePort.loadChatMessegeList(query.roomId(), pageRequest)
                 .stream().map((chatMessage)->
                         ChatMessageResponse.builder()
