@@ -15,7 +15,7 @@ public class ChatMessagePersistenceAdapter implements CreateChatMessagePort {
 
     @Override
     @Transactional
-    public Long createChatMessage(ChatMessage chatMessage) {
+    public ChatMessageJpaEntity createChatMessage(ChatMessage chatMessage) {
         ChatRoomJpaEntity chatRoomJpaEntity = springDataChatRoomRepository.findById(chatMessage.getChatRoomId().value())
                 .orElseThrow(RuntimeException::new);
 
@@ -28,6 +28,6 @@ public class ChatMessagePersistenceAdapter implements CreateChatMessagePort {
         chatRoomJpaEntity.createMessage(chatMessageJpaEntity);
         springDataChatRoomRepository.save(chatRoomJpaEntity);
 
-        return chatMessageJpaEntity.getId();
+        return chatMessageJpaEntity;
     }
 }

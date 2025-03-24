@@ -25,7 +25,7 @@ public class LoadChatMessageService implements ChatMessageLoadUseCase {
                         ChatMessageResponse.builder()
                                 .id(chatMessage.getChatId().value())
                                 .content(chatMessage.getContent())
-                                .creatorNickName(chatMessage.getCreatorNickName())
+                                .creator(chatMessage.getCreator())
                                 .build())
                 .collect(Collectors.toList());
     }

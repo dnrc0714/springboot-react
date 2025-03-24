@@ -12,4 +12,7 @@ interface SpringDataChatMessageRepository extends JpaRepository<ChatMessageJpaEn
 
     @EntityGraph(attributePaths = {"creator"})
     Slice<ChatMessageJpaEntity> findAllByChatRoom(ChatRoomJpaEntity chatRoomJpaEntity, PageRequest pageRequest);
+
+    @EntityGraph(attributePaths = {"creator"})
+    ChatMessageJpaEntity findOneById(Long id);
 }
