@@ -22,6 +22,8 @@ public class ChatMessagePersistenceAdapter implements CreateChatMessagePort {
         ChatMessageJpaEntity chatMessageJpaEntity = ChatMessageJpaEntity.builder()
                 .chatRoom(chatRoomJpaEntity)
                 .content(chatMessage.getContent())
+                .creator(chatMessage.getCreator())
+                .type(chatMessage.getType())
                 .creatorId(chatMessage.getCreatorId())
                 .build();
 

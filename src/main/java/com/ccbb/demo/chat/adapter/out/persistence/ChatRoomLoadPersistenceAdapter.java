@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ChatRoomLoadPersistenceAdapter implements LoadChatRoomPort {
     private final SpringDataChatRoomRepository springDataChatRoomRepository;
+    
     @Override
     public ChatRoom loadById(Long roomId, PageRequest pageRequest) {
         ChatRoomJpaEntity chatRoomJpaEntity = springDataChatRoomRepository.findById(roomId)

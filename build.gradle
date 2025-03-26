@@ -36,6 +36,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.postgresql:postgresql:42.7.3'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
     // log4j2
     implementation('org.springframework.boot:spring-boot-starter-log4j2') {
@@ -72,6 +73,8 @@ sourceSets {
     }
 }
 
+/*React Build*/
+/*
 processResources {
     dependsOn "buildReact"
 }
@@ -101,10 +104,11 @@ task buildReact(type: Exec) {
     }
 }
 
-/*task copyReactBuildFiles(type: Copy) {
+task copyReactBuildFiles(type: Copy) {
     dependsOn buildReact
     from "$frontendDir/dist"
     into "$projectDir/src/main/resources/static"
-}*/
+}
 
 processResources.dependsOn buildReact
+*/

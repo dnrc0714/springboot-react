@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
 
@@ -24,6 +25,9 @@ public class ChatMessageJpaEntity {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "message_type")
+    private String type;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id", insertable = false, updatable = false)
     private UserJpaEntity creator;
@@ -32,6 +36,7 @@ public class ChatMessageJpaEntity {
     private Long creatorId;
 
     @Column(name = "created_at")
+    @CreationTimestamp
     private OffsetDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -11,7 +11,7 @@ import java.util.Optional;
 interface SpringDataChatMessageRepository extends JpaRepository<ChatMessageJpaEntity, Long> {
 
     @EntityGraph(attributePaths = {"creator"})
-    Slice<ChatMessageJpaEntity> findAllByChatRoom(ChatRoomJpaEntity chatRoomJpaEntity, PageRequest pageRequest);
+    Slice<ChatMessageJpaEntity> findAllByChatRoomOrderByCreatedAt(ChatRoomJpaEntity chatRoomJpaEntity, PageRequest pageRequest);
 
     @EntityGraph(attributePaths = {"creator"})
     ChatMessageJpaEntity findOneById(Long id);

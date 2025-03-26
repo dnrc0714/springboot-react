@@ -30,6 +30,7 @@ class CreateChatMessageService implements ChatMessageCreateUseCase {
                 .chatRoomId(new ChatRoom.id(command.roomId()))
                 .content(command.content())
                 .creatorId(user.getUserId())
+                .type(command.type())
                 .creator(user)
                 .build();
 
