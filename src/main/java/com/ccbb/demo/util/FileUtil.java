@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.ccbb.demo.chat.adapter.out.persistence.SpringDataChatFileRepository;
+import com.ccbb.demo.entity.ChatFileJpaEntity;
+import com.ccbb.demo.entity.UserJpaEntity;
+import com.ccbb.demo.chat.domain.UploadFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class FileUtil {
     private final AmazonS3Client amazonS3Client;
+    private final SpringDataChatFileRepository springDataChatFileRepository;
 
     @Value("${cloud.aws.s3.bucketName}")
     private String bucket;
@@ -75,6 +80,27 @@ public class FileUtil {
     private String changedImageName(String originName) {
         String random = UUID.randomUUID().toString();
         return random + originName;
+    }
+    
+    // DB저장
+    private UploadFile save(UploadFile uploadFile) {
+        UserJpaEntity currentUser = SecurityUtil.getCurrentUser();
+
+        if("002".equals(uploadFile.getUploadType())) {
+            ChatFileJpaEntity chatMessageJpaEntity = ChatFileJpaEntity.builder()
+                    .id(uploadFile.getId())
+                    .seq(uploadFile.getSeq())
+                    .fileName(uploadFile.getFileName())
+                    .fileSize(uploadFile.getFileSize())
+                    .s3Url(uploadFile.getS3Url())
+                    .uploadedBy(currentUser.getUserId())
+                    .build();
+                    springDataChatFileRepository.save(chatMessageJpaEntity);
+                    
+                    return uploadFile;
+        } else {
+            return uploadFile;
+        }
     }
 
 }

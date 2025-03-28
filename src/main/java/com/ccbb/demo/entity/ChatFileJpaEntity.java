@@ -2,11 +2,9 @@ package com.ccbb.demo.entity;
 
 import com.ccbb.demo.chat.adapter.out.persistence.ChatMessageJpaEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,12 +12,13 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(ChatFileJpaEntity.ChatFileId.class)
 @Table(name = "chat_file")
 public class ChatFileJpaEntity {
+
     @Id
-    @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
-    private ChatMessageJpaEntity chatMessage;
+    @Column(name = "chat_message_id", nullable = false)
+    private Long id;
 
     @Id
     @Column(name = "seq", nullable = false)
@@ -42,4 +41,19 @@ public class ChatFileJpaEntity {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "chat_message_id", nullable = false)
+    private ChatMessageJpaEntity chatMessage;
+
+    // 복합 키 클래스
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    public static class ChatFileId implements Serializable {
+        private Long id;
+        private Integer seq;
+    }
 }

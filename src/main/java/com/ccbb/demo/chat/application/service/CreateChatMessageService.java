@@ -9,7 +9,7 @@ import com.ccbb.demo.chat.domain.ChatMessage;
 import com.ccbb.demo.chat.domain.ChatRoom;
 import com.ccbb.demo.common.annotation.UseCase;
 import com.ccbb.demo.entity.UserJpaEntity;
-import com.ccbb.demo.service.auth.AuthService;
+import com.ccbb.demo.util.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -19,16 +19,15 @@ import lombok.RequiredArgsConstructor;
 class CreateChatMessageService implements ChatMessageCreateUseCase {
     private final CreateChatMessagePort createChatMessagePort;
 
-    private final AuthService authService;
-
     @Override
     public ChatMessageJpaEntity createChatMessage(ChatMessageCreateCommand command) {
 
-        UserJpaEntity user = authService.jwtTokenToUser(command.refreshToken());
+        UserJpaEntity user = SecurityUtil.getCurrentUser();
 
         ChatMessage chatMessage = ChatMessage.builder()
                 .chatRoomId(new ChatRoom.id(command.roomId()))
-                .content(command.content())
+                .content(command.content().getText())
+                .files(command.content().getFiles())
                 .creatorId(user.getUserId())
                 .type(command.type())
                 .creator(user)

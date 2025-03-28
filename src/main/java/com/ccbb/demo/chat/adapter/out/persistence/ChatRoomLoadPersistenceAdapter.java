@@ -3,6 +3,7 @@ package com.ccbb.demo.chat.adapter.out.persistence;
 import com.ccbb.demo.chat.application.port.out.LoadChatRoomPort;
 import com.ccbb.demo.chat.domain.ChatRoom;
 import com.ccbb.demo.common.annotation.PersistenceAdapter;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -16,6 +17,7 @@ public class ChatRoomLoadPersistenceAdapter implements LoadChatRoomPort {
     private final SpringDataChatRoomRepository springDataChatRoomRepository;
     
     @Override
+    @Transactional
     public ChatRoom loadById(Long roomId, PageRequest pageRequest) {
         ChatRoomJpaEntity chatRoomJpaEntity = springDataChatRoomRepository.findById(roomId)
                 .orElseThrow(RuntimeException::new);

@@ -52,13 +52,13 @@ public class PostJpaEntity {
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id", insertable = false, updatable = false)
     private UserJpaEntity creator;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private final List<CommentJpaEntity> comments = new ArrayList<>();
+//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    private final List<CommentJpaEntity> comments = new ArrayList<>();
 
     public record PostId(Long value) {}
 
-    public void createComment(CommentJpaEntity commentJpaEntity){
+    /*public void createComment(CommentJpaEntity commentJpaEntity){
         comments.add(commentJpaEntity);
-    }
+    }*/
 
 }

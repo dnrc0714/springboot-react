@@ -1,5 +1,6 @@
 package com.ccbb.demo.chat.application.service;
 
+import com.ccbb.demo.chat.adapter.in.web.dto.ChatFileMapper;
 import com.ccbb.demo.chat.adapter.in.web.dto.ChatMessageResponse;
 import com.ccbb.demo.chat.application.port.in.ChatMessageLoadUseCase;
 import com.ccbb.demo.chat.application.port.in.query.ChatMessageListQuery;
@@ -16,17 +17,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LoadChatMessageService implements ChatMessageLoadUseCase {
     private final LoadChatMessagePort loadChatMessagePort;
+    private final ChatFileMapper chatFileMapper;
     @Override
     public List<ChatMessageResponse> getChatMessageList(ChatMessageListQuery query) {
         PageRequest pageRequest = PageRequest.of(query.page(), query.size(), Sort.by("id").ascending());
 
         return loadChatMessagePort.loadChatMessegeList(query.roomId(), pageRequest)
-                .stream().map((chatMessage)->
+                .stream()
+                .map(chatMessage ->
                         ChatMessageResponse.builder()
-                                .id(chatMessage.getChatId().value())
-                                .content(chatMessage.getContent())
-                                .creator(chatMessage.getCreator())
-                                .build())
+                        .id(chatMessage.getChatId().value())
+                        .content(chatMessage.getContent())
+                        .creator(chatMessage.getCreator())
+                        .chatFile(chatFileMapper.convertToUploadFiles(chatMessage.getChatFile()))
+                        .build())
                 .collect(Collectors.toList());
     }
 }

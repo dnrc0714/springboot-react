@@ -1,5 +1,6 @@
 package com.ccbb.demo.chat.adapter.out.persistence;
 
+import com.ccbb.demo.entity.ChatFileJpaEntity;
 import com.ccbb.demo.entity.UserJpaEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -43,4 +46,6 @@ public class ChatMessageJpaEntity {
     @JoinColumn(name = "chat_room_id", nullable = false) // FK 설정
     private ChatRoomJpaEntity chatRoom;
 
+    @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<ChatFileJpaEntity> files;
 }

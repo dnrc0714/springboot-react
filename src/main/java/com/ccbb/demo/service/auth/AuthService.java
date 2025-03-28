@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.ccbb.demo.util.JwtUtil;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -85,8 +88,10 @@ public class AuthService {
         if (expirationInMillis > 0) {
             redisService.saveRefreshToken(user.getUserId().toString(), refreshToken); // Redis에 Refresh Token 저장
         } else {
-            throw new IllegalStateException("Token has already expired");
+            throw new IllegalStateException("로그인 정보가 만료되었습니다.");
         }
+
+        authenticateUser(user);
 
         return new String[]{accessToken, refreshToken};
     }
@@ -106,6 +111,8 @@ public class AuthService {
         // Redis에 Refresh Token 저장
         redisService.saveRefreshToken(user.getUserId().toString(), refreshToken);
 
+        authenticateUser(user);
+
         return new String[]{accessToken, refreshToken};
     }
 
@@ -123,7 +130,7 @@ public class AuthService {
         Optional<UserJpaEntity> optionalUser = userRepository.findById(jwtData.get("id"));
         System.out.println(jwtData);
 
-        return optionalUser.orElseThrow(() -> new RuntimeException("User not found"));
+        return optionalUser.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     }
 
     public void logout(String refreshToken) {
@@ -144,6 +151,12 @@ public class AuthService {
 
     public boolean isPhoneNumberExists(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber).isPresent();
+    }
+
+    public void authenticateUser(UserJpaEntity user) {
+        // ✅ 현재 사용자 정보를 SecurityContextHolder에 저장
+        UsernamePasswordAuthenticationToken authenticationUser = new UsernamePasswordAuthenticationToken(user, null, List.of(() -> user.getRole()));
+        SecurityContextHolder.getContext().setAuthentication(authenticationUser);
     }
 
 }

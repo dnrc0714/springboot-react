@@ -1,8 +1,6 @@
 package com.ccbb.demo.chat.adapter.in.web.dto;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.ccbb.demo.chat.domain.ChatContent;
 
-import java.util.List;
-
-public record ChatMessageRequest(String content, String from, String type) {
+public record ChatMessageRequest(ChatContent content, String from, String type) {
 }

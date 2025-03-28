@@ -22,23 +22,25 @@ public class ChatController {
     @MessageMapping("/chat/rooms/{roomId}/send")
     @SendTo("/topic/public/rooms/{roomId}")
     public ChatMessageResponse sendMessage(@DestinationVariable("roomId") Long roomId, @Payload ChatMessageRequest chatMessage) {
-        System.out.println("chatMessage ::: " + chatMessage.content());
-        /*ChatMessageCreateCommand chatMessageCreateCommand = ChatMessageCreateCommand.builder()
+
+        ChatMessageCreateCommand chatMessageCreateCommand = ChatMessageCreateCommand.builder()
                 .content(chatMessage.content())
                 .refreshToken(chatMessage.from())
                 .type(chatMessage.type())
                 .roomId(roomId)
-                .build();*/
+                .build();
 
-        // ChatMessageJpaEntity chat = chatMessageCreateUseCase.createChatMessage(chatMessageCreateCommand); // DB에 등록 후 Chat Message Id 반환
+        ChatMessageJpaEntity chat = chatMessageCreateUseCase.createChatMessage(chatMessageCreateCommand); // DB에 등록 후 Chat Message Id 반환
 
-        ChatMessageResponse chatMessageResponse =  null;/*ChatMessageResponse.builder()
+
+        ChatMessageResponse chatMessageResponse = ChatMessageResponse.builder()
                 .id(chat.getId())
                 .content(chat.getContent())
                 .creatorId(chat.getCreatorId())
                 .createdAt(chat.getCreatedAt())
                 .creator(chat.getCreator())
-                .build();*/
+                .build();
+
         return chatMessageResponse;
     }
 }
