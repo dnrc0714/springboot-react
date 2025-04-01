@@ -1,5 +1,6 @@
 package com.ccbb.demo.chat.adapter.out.persistence;
 
+import com.ccbb.demo.entity.ChatFileJpaEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;

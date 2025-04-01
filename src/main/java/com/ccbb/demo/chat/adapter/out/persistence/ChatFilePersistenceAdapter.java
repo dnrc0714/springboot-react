@@ -58,6 +58,7 @@ public class ChatFilePersistenceAdapter implements CreateChatFilePort {
                 seq.getAndIncrement();
             });
         }
+        /*파일 업로드 후 다시 로드 되게 만들어야 함*/
         return chatFilesArr;
     }
 
