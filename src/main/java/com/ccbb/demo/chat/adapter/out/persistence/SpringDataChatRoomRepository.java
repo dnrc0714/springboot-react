@@ -9,9 +9,5 @@ import java.util.Optional;
 
 interface SpringDataChatRoomRepository extends JpaRepository<ChatRoomJpaEntity, Long> {
 
-    @EntityGraph(attributePaths = {"files"})
     Slice<ChatRoomJpaEntity> findAllBy(Pageable pageable);
-
-    @EntityGraph(attributePaths = {"files"})
-    Optional<ChatRoomJpaEntity> findById(Long id);
 }

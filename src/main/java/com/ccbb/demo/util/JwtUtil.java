@@ -105,6 +105,10 @@ public class JwtUtil {
         System.out.println("userId : " + userId);
 
         // Redis에서 해당 사용자의 Refresh Token 가져오기
+        // 2. "Bearer " 접두사가 있는 경우 제거
+        if (refreshToken.startsWith("Bearer ")) {
+            refreshToken = refreshToken.substring(7); // "Bearer " 제거
+        }
 
         String storedRefreshToken = redisService.getRefreshToken(userId);
 

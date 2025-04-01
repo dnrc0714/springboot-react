@@ -10,7 +10,7 @@ import java.util.Optional;
 
 interface SpringDataChatMessageRepository extends JpaRepository<ChatMessageJpaEntity, Long> {
 
-    @EntityGraph(attributePaths = {"creator"})
+    @EntityGraph(attributePaths = {"creator", "files"})
     Slice<ChatMessageJpaEntity> findAllByChatRoomOrderByCreatedAt(ChatRoomJpaEntity chatRoomJpaEntity, PageRequest pageRequest);
 
     @EntityGraph(attributePaths = {"creator"})

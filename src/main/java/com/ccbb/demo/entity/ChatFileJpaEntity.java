@@ -18,7 +18,7 @@ public class ChatFileJpaEntity {
 
     @Id
     @Column(name = "chat_message_id", nullable = false)
-    private Long id;
+    private Long chatMessageId;
 
     @Id
     @Column(name = "seq", nullable = false)
@@ -26,6 +26,9 @@ public class ChatFileJpaEntity {
 
     @Column(name = "file_name", nullable = false)
     private String fileName;
+
+    @Column(name = "stored_name", nullable = false)
+    private String storedName;
 
     @Column(name = "file_size", nullable = false)
     private Long fileSize;
@@ -43,7 +46,7 @@ public class ChatFileJpaEntity {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "chat_message_id", nullable = false)
+    @JoinColumn(name = "chat_message_id", nullable = false, insertable = false, updatable = false)
     private ChatMessageJpaEntity chatMessage;
 
     // 복합 키 클래스
@@ -53,7 +56,7 @@ public class ChatFileJpaEntity {
     @AllArgsConstructor
     @EqualsAndHashCode
     public static class ChatFileId implements Serializable {
-        private Long id;
+        private Long chatMessageId;
         private Integer seq;
     }
 }

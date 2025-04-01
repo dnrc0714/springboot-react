@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.ccbb.demo.chat.adapter.out.persistence.SpringDataChatFileRepository;
-import com.ccbb.demo.entity.ChatFileJpaEntity;
-import com.ccbb.demo.entity.UserJpaEntity;
-import com.ccbb.demo.chat.domain.UploadFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -27,11 +26,36 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Service
 public class FileUtil {
+    private final AmazonS3 amazonS3;
     private final AmazonS3Client amazonS3Client;
     private final SpringDataChatFileRepository springDataChatFileRepository;
 
     @Value("${cloud.aws.s3.bucketName}")
     private String bucket;
+
+    public String uploadFile(MultipartFile file, String dirName) {
+        String originalName = file.getOriginalFilename();
+        String folderPath = dirName.endsWith("/") ? dirName : dirName + "/";
+        String storedName = folderPath + UUID.randomUUID().toString() + "_" + originalName;
+
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(file.getContentType());
+        metadata.setContentLength(file.getSize());
+
+        try {
+            PutObjectRequest request = new PutObjectRequest(
+                    bucket,
+                    storedName,
+                    file.getInputStream(),
+                    metadata
+            );
+            amazonS3.putObject(request);
+
+            return amazonS3.getUrl(bucket, storedName).toString();
+        } catch (IOException e) {
+            throw new RuntimeException("파일 업로드 실패", e);
+        }
+    }
 
     // MultipartFile을 전달받아 File로 전환한 후 S3에 업로드
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
@@ -80,27 +104,6 @@ public class FileUtil {
     private String changedImageName(String originName) {
         String random = UUID.randomUUID().toString();
         return random + originName;
-    }
-    
-    // DB저장
-    private UploadFile save(UploadFile uploadFile) {
-        UserJpaEntity currentUser = SecurityUtil.getCurrentUser();
-
-        if("002".equals(uploadFile.getUploadType())) {
-            ChatFileJpaEntity chatMessageJpaEntity = ChatFileJpaEntity.builder()
-                    .id(uploadFile.getId())
-                    .seq(uploadFile.getSeq())
-                    .fileName(uploadFile.getFileName())
-                    .fileSize(uploadFile.getFileSize())
-                    .s3Url(uploadFile.getS3Url())
-                    .uploadedBy(currentUser.getUserId())
-                    .build();
-                    springDataChatFileRepository.save(chatMessageJpaEntity);
-                    
-                    return uploadFile;
-        } else {
-            return uploadFile;
-        }
     }
 
 }

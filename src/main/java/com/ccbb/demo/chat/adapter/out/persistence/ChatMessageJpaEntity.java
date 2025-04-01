@@ -3,10 +3,7 @@ package com.ccbb.demo.chat.adapter.out.persistence;
 import com.ccbb.demo.entity.ChatFileJpaEntity;
 import com.ccbb.demo.entity.UserJpaEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
@@ -15,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "chat_messages")
 @Builder
 @NoArgsConstructor

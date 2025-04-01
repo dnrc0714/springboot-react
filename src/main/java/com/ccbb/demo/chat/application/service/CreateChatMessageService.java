@@ -13,6 +13,7 @@ import com.ccbb.demo.util.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+
 @UseCase
 @RequiredArgsConstructor
 @Transactional
@@ -22,15 +23,12 @@ class CreateChatMessageService implements ChatMessageCreateUseCase {
     @Override
     public ChatMessageJpaEntity createChatMessage(ChatMessageCreateCommand command) {
 
-        UserJpaEntity user = SecurityUtil.getCurrentUser();
-
         ChatMessage chatMessage = ChatMessage.builder()
                 .chatRoomId(new ChatRoom.id(command.roomId()))
-                .content(command.content().getText())
-                .files(command.content().getFiles())
-                .creatorId(user.getUserId())
+                .content(command.content())
                 .type(command.type())
-                .creator(user)
+                .principal(command.principal())
+                .token(command.token())
                 .build();
 
         return createChatMessagePort.createChatMessage(chatMessage);

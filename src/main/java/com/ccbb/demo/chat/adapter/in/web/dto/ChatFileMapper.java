@@ -13,7 +13,7 @@ public class ChatFileMapper {
     public List<UploadFile> convertToUploadFiles(List<ChatFileJpaEntity> chatFiles) {
         return chatFiles.stream()
                 .map(chatFile -> UploadFile.builder()
-                        .id(chatFile.getId())
+                        .id(chatFile.getChatMessageId())
                         .seq(chatFile.getSeq())
                         .fileName(chatFile.getFileName())
                         .fileSize(chatFile.getFileSize())
