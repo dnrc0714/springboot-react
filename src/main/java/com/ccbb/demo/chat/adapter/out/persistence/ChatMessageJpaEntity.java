@@ -29,7 +29,7 @@ public class ChatMessageJpaEntity {
     @Column(name = "message_type")
     private String type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id", insertable = false, updatable = false)
     private UserJpaEntity creator;
 

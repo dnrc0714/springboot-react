@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
-@Transactional
 public class CreateChatRoomService implements ChatRoomCreateUseCase {
     private final CreateChatRoomPort createChatRoomPort;
 
     @Override
+    @Transactional
     public boolean createChatRoom(ChatRoomCreateCommand command) {
         ChatRoom chatRoom = ChatRoom.builder()
                 .build();

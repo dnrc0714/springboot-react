@@ -15,7 +15,7 @@ public class ChatMessageController {
     @GetMapping("/{roomId}/messages")
     public SuccessApiResponse<?> getMessageList(@PathVariable Long roomId,
                                                 @RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "5") int size
+                                                @RequestParam(defaultValue = "10") int size
     ){
         ChatMessageListQuery query = ChatMessageListQuery.builder()
                 .roomId(roomId)

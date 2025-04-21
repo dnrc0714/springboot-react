@@ -9,6 +9,7 @@ import com.ccbb.demo.chat.application.port.in.query.ChatRoomListQuery;
 import com.ccbb.demo.chat.application.port.in.query.ChatRoomQuery;
 import com.ccbb.demo.chat.application.port.out.LoadChatRoomPort;
 import com.ccbb.demo.common.annotation.UseCase;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,6 +23,7 @@ public class LoadChatRoomService implements ChatRoomLoadUseCase {
     private final LoadChatRoomPort loadChatRoomPort;
 
     @Override
+    @Transactional
     public ChatRoomResponse getChatRoomById(ChatRoomQuery chatRoomQuery) {
         PageRequest pageRequest = PageRequest.of(chatRoomQuery.page(), chatRoomQuery.size());
         ChatRoom chatRoom = loadChatRoomPort.loadById(chatRoomQuery.id(), pageRequest);
@@ -32,6 +34,7 @@ public class LoadChatRoomService implements ChatRoomLoadUseCase {
     }
 
     @Override
+    @Transactional
     public ChatRoomListReadResponse getChatRoomList(ChatRoomListQuery query) {
         PageRequest pageRequest = PageRequest.of(query.page(), query.size(), Sort.by("id").descending());
         List<ChatRoom> chatRoomList = loadChatRoomPort.search(pageRequest);

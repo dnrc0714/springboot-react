@@ -6,8 +6,10 @@ import com.ccbb.demo.chat.application.port.in.ChatMessageLoadUseCase;
 import com.ccbb.demo.chat.application.port.in.query.ChatMessageListQuery;
 import com.ccbb.demo.chat.application.port.out.LoadChatMessagePort;
 import com.ccbb.demo.common.annotation.UseCase;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -18,9 +20,10 @@ import java.util.stream.Collectors;
 public class LoadChatMessageService implements ChatMessageLoadUseCase {
     private final LoadChatMessagePort loadChatMessagePort;
     private final ChatFileMapper chatFileMapper;
+
     @Override
     public List<ChatMessageResponse> getChatMessageList(ChatMessageListQuery query) {
-        PageRequest pageRequest = PageRequest.of(query.page(), query.size(), Sort.by("id").ascending());
+        Pageable pageRequest = PageRequest.of(query.page(), query.size(), Sort.by("id").descending());
 
         return loadChatMessagePort.loadChatMessegeList(query.roomId(), pageRequest)
                 .stream()

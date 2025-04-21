@@ -3,6 +3,7 @@ package com.ccbb.demo.entity;
 import com.ccbb.demo.chat.adapter.out.persistence.ChatMessageJpaEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -43,6 +44,7 @@ public class ChatFileJpaEntity {
     private Long uploadedBy;
 
     @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.EAGER)

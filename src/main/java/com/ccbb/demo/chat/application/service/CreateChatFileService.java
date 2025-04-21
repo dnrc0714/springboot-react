@@ -18,12 +18,12 @@ import java.util.List;
 
 @UseCase
 @RequiredArgsConstructor
-@Transactional
 class CreateChatFileService implements ChatFileCreateUseCase {
 
     private final CreateChatFilePort createChatFilePort;
 
     @Override
+    @Transactional
     public List<ChatFileJpaEntity> createChatFile(ChatFileCreateCommand command) {
         List<ChatFileJpaEntity> chatFilesArr = new ArrayList<>();
 

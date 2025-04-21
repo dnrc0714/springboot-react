@@ -54,9 +54,17 @@ public class ChatMessagePersistenceAdapter implements CreateChatMessagePort {
                 .creatorId(user.getUserId())
                 .build();
 
-        chatMessageJpaEntity = springDataChatMessageRepository.save(chatMessageJpaEntity);
-
         chatRoomJpaEntity.createMessage(chatMessageJpaEntity);
+
+        springDataChatRoomRepository.save(chatRoomJpaEntity);
+
+        //System.out.println("chatRoomJpaEntity ::: " + chatRoomJpaEntity.getChatMessageList());
+//        for (ChatMessageJpaEntity chatMessageJpa : chatRoomJpaEntity.getChatMessageList()) {
+//            System.out.println("chatMessageJpa.getId() ::: " + chatMessageJpa.getId());
+//            System.out.println("chatMessageJpa.getContent() ::: " + chatMessageJpa.getContent());
+//        }
+        chatMessageJpaEntity.setId(chatRoomJpaEntity.getChatMessageList().getLast().getId());
+
 
         return chatMessageJpaEntity;
     }

@@ -96,6 +96,7 @@ public class AuthService {
         return new String[]{accessToken, refreshToken};
     }
 
+    @Transactional
     public String[] authenticate(SignInRequest request) {
         UserJpaEntity user = userRepository.findById(request.getId())
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + request.getId()));
@@ -124,11 +125,11 @@ public class AuthService {
         return jwtUtil.generateAccessToken(Long.parseLong(jwtData.get("userId")), jwtData.get("id"), jwtData.get("username"), jwtData.get("nickname"), jwtData.get("role"));
     }
 
+    @Transactional
     public UserJpaEntity jwtTokenToUser(String token) {
         Map<String, String> jwtData = jwtUtil.jwtData(token);
 
         Optional<UserJpaEntity> optionalUser = userRepository.findById(jwtData.get("id"));
-        System.out.println(jwtData);
 
         return optionalUser.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     }
@@ -137,6 +138,7 @@ public class AuthService {
         redisService.deleteRefreshToken(refreshToken);
     }
 
+    @Transactional
     public boolean isUserIdExists(String userId) {
         return userRepository.findById(userId).isPresent();
     }

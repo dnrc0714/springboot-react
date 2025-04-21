@@ -60,7 +60,7 @@ public class ChatController {
                 .createdAt(chat.getCreatedAt())
                 .creator(chat.getCreator())
                 .build();
-        System.out.println("chatMessageResponse --- " + chatMessageResponse);
+        System.out.println("chatMessageResponse --- " + chat);
         return chatMessageResponse;
     }
 
@@ -88,9 +88,6 @@ public class ChatController {
 
         List<ChatFileJpaEntity> chatFile = chatFileCreateUseCase.createChatFile(chatFileCreateCommand);
 
-        System.out.println("getChatMessageId = " + chatFile.get(0).getChatMessageId());
-        System.out.println("getS3Url() = " + chatFile.get(0).getS3Url());
-
-        messagingTemplate.convertAndSend("/topic/public/rooms/{roomId}", chatFile);
+        messagingTemplate.convertAndSend("/topic/public/rooms/"+roomId, chatFile);
     }
 }

@@ -27,6 +27,7 @@ public class ChatRoomLoadPersistenceAdapter implements LoadChatRoomPort {
     }
 
     @Override
+    @Transactional
     public List<ChatRoom> search(PageRequest pageRequest) {
         Slice<ChatRoomJpaEntity> chatRoomJpaEntityList = springDataChatRoomRepository.findAllBy(pageRequest);
         return chatRoomJpaEntityList.stream()

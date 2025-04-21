@@ -8,19 +8,17 @@ import com.ccbb.demo.chat.application.port.out.CreateChatMessagePort;
 import com.ccbb.demo.chat.domain.ChatMessage;
 import com.ccbb.demo.chat.domain.ChatRoom;
 import com.ccbb.demo.common.annotation.UseCase;
-import com.ccbb.demo.entity.UserJpaEntity;
-import com.ccbb.demo.util.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 
 @UseCase
 @RequiredArgsConstructor
-@Transactional
 class CreateChatMessageService implements ChatMessageCreateUseCase {
     private final CreateChatMessagePort createChatMessagePort;
 
     @Override
+    @Transactional
     public ChatMessageJpaEntity createChatMessage(ChatMessageCreateCommand command) {
 
         ChatMessage chatMessage = ChatMessage.builder()

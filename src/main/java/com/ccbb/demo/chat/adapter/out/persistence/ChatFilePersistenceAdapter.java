@@ -9,6 +9,7 @@ import com.ccbb.demo.util.FileUtil;
 import com.ccbb.demo.util.GcpFileUtil;
 import com.ccbb.demo.util.JwtUtil;
 import com.ccbb.demo.util.SecurityUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +29,7 @@ public class ChatFilePersistenceAdapter implements CreateChatFilePort {
 
 
     @Override
+    @Transactional
     public List<ChatFileJpaEntity> createChatFiles(ChatFiles chatFiles) {
         UserJpaEntity user = new UserJpaEntity();
 
@@ -63,6 +65,7 @@ public class ChatFilePersistenceAdapter implements CreateChatFilePort {
     }
 
     @Override
+    @Transactional
     public ChatFileJpaEntity createChatFile(ChatFiles chatFiles) {
         UserJpaEntity user = new UserJpaEntity();
 
